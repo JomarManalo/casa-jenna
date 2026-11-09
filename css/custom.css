@@ -247,6 +247,14 @@ body #Top_bar .column.one .top_bar_left { width: auto !important; } /* beats the
 
 /* Top banner photo lives in its own layer so it can settle from a slight zoom after the preloader */
 #Header .cj-hero { overflow: hidden; }
+
+/* Parallax photo sections: the photo stays put while the page scrolls — desktop only.
+   iPhone/iPad Safari (and most touch browsers) can't do background-attachment: fixed; they stretch the
+   photo to the whole page height, which showed as a huge, blurry close-up. Touch screens get a normal photo. */
+.cj-hero--parallax { background-attachment: scroll; }
+@media (hover: hover) and (pointer: fine) {
+	.cj-hero--parallax { background-attachment: fixed; }
+}
 .cj-hero__bg {
 	position: absolute;
 	inset: 0;
