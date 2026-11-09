@@ -125,6 +125,16 @@ body.header-transparent #Header_wrapper { background: none; }
 	background: none;
 }
 body #Top_bar .column.one .top_bar_left { width: auto !important; } /* beats the inline width scripts.js sets */
+/* BeTheme forces the logo box to a fixed 50–60px height in sticky/mobile states ("#Top_bar.is-sticky #logo",
+   ".mobile-sticky #Top_bar.is-sticky #logo { height: 60px !important }"), which pinned our logo to the top edge.
+   The doubled class out-ranks those rules: let the logo size to its content and centre it vertically. */
+#Top_bar #logo.cj-logo.cj-logo {
+	height: auto !important;
+	line-height: 1 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	justify-content: center;
+}
 #Top_bar .logo { float: none; margin: 0; padding: 0; width: auto; }
 #Top_bar #logo.cj-logo { display: inline-flex !important; height: auto !important; line-height: 1; padding: 0 !important; }
 .cj-logo > span { display: block; }
@@ -669,6 +679,9 @@ a.cj-contact__value:hover { color: var(--cj-accent); }
 	#Top_bar .column.one { padding: 0 24px; }
 	#Top_bar .menu > li > a span:not(.description) { padding: 0 14px; }
 	.cj-intro { gap: 70px; }
+	/* BeTheme collapses the menu into the menu button below 1240px; the phone number then sat right
+	   beside the button. It stays reachable in the slide-out menu, the footer and the contact page. */
+	.cj-header-phone { display: none; }
 }
 
 @media only screen and (max-width: 959px) {
