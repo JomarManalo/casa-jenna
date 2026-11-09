@@ -47,7 +47,10 @@ RESORT_JSON=$(cat <<JSON
   },
   "geo": { "@type": "GeoCoordinates", "latitude": 15.0471827, "longitude": 120.767952 },
   "hasMap": "https://maps.app.goo.gl/NkSsiBD7RwmSyhVX7",
-  "sameAs": ["https://www.facebook.com/profile.php?id=61583969881417"],
+  "sameAs": [
+    "https://www.facebook.com/profile.php?id=61583969881417",
+    "https://www.instagram.com/casajennamexicopamp"
+  ],
   "maximumAttendeeCapacity": 40,
   "amenityFeature": [
     { "@type": "LocationFeatureSpecification", "name": "Private swimming pool", "value": true },
