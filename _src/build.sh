@@ -64,7 +64,7 @@ for row in "${pages[@]}"; do
   IFS='|' read -r name title desc bodyclass active image imagealt crumb <<< "$row"
   [ -f "$B/$name.body.html" ] || { echo "skip $name (no body yet)"; continue; }
 
-  if [ "$name" = index ]; then url="$SITE/"; else url="$SITE/$name.html"; fi
+  if [ "$name" = index ]; then url="$SITE/"; else url="$SITE/$name"; fi
 
   # Home and contact carry the full business entity; every other page gets breadcrumbs.
   graph=""
@@ -106,7 +106,7 @@ done
   echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
   for row in "${pages[@]}"; do
     name="${row%%|*}"
-    if [ "$name" = index ]; then loc="$SITE/"; pri="1.0"; else loc="$SITE/$name.html"; pri="0.8"; fi
+    if [ "$name" = index ]; then loc="$SITE/"; pri="1.0"; else loc="$SITE/$name"; pri="0.8"; fi
     printf '  <url><loc>%s</loc><lastmod>%s</lastmod><priority>%s</priority></url>\n' "$loc" "$TODAY" "$pri"
   done
   echo '</urlset>'

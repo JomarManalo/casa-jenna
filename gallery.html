@@ -7,7 +7,7 @@
     <meta name="description" content="Photos of the villa, function hall, garden and swimming pool at Casa Jenna private resort in Mexico, Pampanga.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <link rel="canonical" href="https://casa-jena.jmventerprise.com/gallery.html">
+    <link rel="canonical" href="https://casa-jena.jmventerprise.com/gallery">
 
     <!-- Open Graph (Facebook, Messenger, Viber) -->
     <meta property="og:type" content="website">
@@ -15,7 +15,7 @@
     <meta property="og:locale" content="en_PH">
     <meta property="og:title" content="Gallery — Casa Jenna Private Resort">
     <meta property="og:description" content="Photos of the villa, function hall, garden and swimming pool at Casa Jenna private resort in Mexico, Pampanga.">
-    <meta property="og:url" content="https://casa-jena.jmventerprise.com/gallery.html">
+    <meta property="og:url" content="https://casa-jena.jmventerprise.com/gallery">
     <meta property="og:image" content="https://casa-jena.jmventerprise.com/images/og/gallery.jpg">
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
@@ -39,7 +39,7 @@
 
   { "@type": "BreadcrumbList", "itemListElement": [
     { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://casa-jena.jmventerprise.com/" },
-    { "@type": "ListItem", "position": 2, "name": "Gallery", "item": "https://casa-jena.jmventerprise.com/gallery.html" }
+    { "@type": "ListItem", "position": 2, "name": "Gallery", "item": "https://casa-jena.jmventerprise.com/gallery" }
   ] }
 ] }
     </script>
@@ -54,6 +54,26 @@
          html.js = scripting on · html.cj-seen = already played this session · html.cj-ready = cover lifted / page revealed -->
     <script>
     (function () {
+        // Clean URLs: links say "villa", which a web server (GitHub Pages, the local preview) serves as villa.html.
+        if (location.protocol === 'file:') {
+            // Opened straight from the folder (double-click): no server, so add .html back when a link is clicked.
+            document.addEventListener('click', function (e) {
+                var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+                if (!a) return;
+                var h = a.getAttribute('href');
+                if (h === './' || h === '.') a.setAttribute('href', 'index.html');
+                else if (/^[a-z0-9-]+(#.*)?$/i.test(h)) a.setAttribute('href', h.replace(/^([a-z0-9-]+)/i, '$1.html'));
+            }, true);
+        } else {
+            // On a server, old links like /villa.html still work; show them as /villa (and /index.html as /).
+            try {
+                var p = location.pathname;
+                if (/\.html$/.test(p) && history.replaceState) {
+                    history.replaceState(null, '', p.replace(/(index)?\.html$/, '') + location.search + location.hash);
+                }
+            } catch (e) {}
+        }
+
         var d = document.documentElement, seen = false;
         d.className = d.className.replace(/\bno-js\b/, '') + ' js';
         try { seen = sessionStorage.getItem('cj-intro') === '1'; } catch (e) {}
@@ -151,7 +171,7 @@
                         <div class="column one">
                             <div class="top_bar_left clearfix">
                                 <div class="logo">
-                                    <a id="logo" class="cj-logo" href="index.html" title="Casa Jenna">
+                                    <a id="logo" class="cj-logo" href="./" title="Casa Jenna">
                                         <svg class="cj-mark" viewBox="612 700 712 245" fill="none" stroke="currentColor" stroke-width="13" aria-hidden="true"><path d="M750 790L922 715M1012 715L1183 790M788 778V917M895 724V917M1045 724V917M1150 778V917M895 760H1045M788 832H1150"/><rect x="620" y="917" width="695" height="20" fill="currentColor" stroke="none"/></svg>
                                         <span class="cj-logo__name">Casa Jenna</span>
                                     </a>
@@ -159,11 +179,11 @@
                                 <div class="menu_wrapper">
                                     <nav id="menu">
                                         <ul id="menu-main-menu" class="menu menu-main">
-                                            <li class=""><a href="index.html"><span>Home</span></a></li>
-                                            <li class=""><a href="villa.html"><span>The villa</span></a></li>
-                                            <li class=""><a href="function-hall.html"><span>Function hall</span></a></li>
-                                            <li class="current-menu-item page_item current_page_item"><a href="gallery.html"><span>Gallery</span></a></li>
-                                            <li class=""><a href="contact.html"><span>Book &amp; contact</span></a></li>
+                                            <li class=""><a href="./"><span>Home</span></a></li>
+                                            <li class=""><a href="villa"><span>The villa</span></a></li>
+                                            <li class=""><a href="function-hall"><span>Function hall</span></a></li>
+                                            <li class="current-menu-item page_item current_page_item"><a href="gallery"><span>Gallery</span></a></li>
+                                            <li class=""><a href="contact"><span>Book &amp; contact</span></a></li>
                                         </ul>
                                     </nav><a class="responsive-menu-toggle" href="#" aria-label="Open menu"><i class="icon-menu-fine"></i></a>
                                 </div>
@@ -235,7 +255,7 @@
                         <p>Sitio Caingin, Laug<br>Mexico, Pampanga 2021<br>Philippines<br><a href="tel:+639175426468">0917 542 6468</a></p>
                     </div>
                     <div class="cj-footer__brand">
-                        <a class="cj-logo" href="index.html" title="Casa Jenna">
+                        <a class="cj-logo" href="./" title="Casa Jenna">
                             <svg class="cj-mark" viewBox="612 700 712 245" fill="none" stroke="currentColor" stroke-width="13" aria-hidden="true"><path d="M750 790L922 715M1012 715L1183 790M788 778V917M895 724V917M1045 724V917M1150 778V917M895 760H1045M788 832H1150"/><rect x="620" y="917" width="695" height="20" fill="currentColor" stroke="none"/></svg>
                             <span class="cj-logo__name">Casa Jenna</span>
                         </a>
@@ -247,7 +267,7 @@
                     </div>
                     <div class="cj-footer__col">
                         <h6>Links</h6>
-                        <p><a href="villa.html">The villa</a><br><a href="function-hall.html">Function hall</a><br><a href="gallery.html">Gallery</a><br><a href="contact.html">Book your stay</a></p>
+                        <p><a href="villa">The villa</a><br><a href="function-hall">Function hall</a><br><a href="gallery">Gallery</a><br><a href="contact">Book your stay</a></p>
                     </div>
                 </div>
                 <div class="cj-footer__copy">&copy; 2026 Casa Jenna. All rights reserved.</div>
