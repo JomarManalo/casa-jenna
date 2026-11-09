@@ -84,6 +84,69 @@
     <link rel="manifest" href="site.webmanifest">
     <meta name="theme-color" content="#3d402c">
 
+    <!-- PRELOADER: first visit per browser session only. Inline so the cover paints before the big stylesheets.
+         html.js = scripting on · html.cj-seen = already played this session · html.cj-ready = cover lifted / page revealed -->
+    <script>
+    (function () {
+        var d = document.documentElement, seen = false;
+        d.className = d.className.replace(/\bno-js\b/, '') + ' js';
+        try { seen = sessionStorage.getItem('cj-intro') === '1'; } catch (e) {}
+        if (seen) {
+            d.className += ' cj-seen';
+            document.addEventListener('DOMContentLoaded', function () { d.className += ' cj-ready'; });
+            return;
+        }
+        try { sessionStorage.setItem('cj-intro', '1'); } catch (e) {}
+        var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches, done = false;
+        function finish() {
+            if (done) return;
+            done = true;
+            d.className += ' cj-ready';
+            var l = document.getElementById('cj-loader');
+            if (l) { l.className += ' is-done'; setTimeout(function () { if (l.parentNode) l.parentNode.removeChild(l); }, 1800); }
+        }
+        setTimeout(finish, 5000); // never keep the page hidden longer than this
+        if (!window.Promise) return;
+        Promise.all([
+            new Promise(function (r) { setTimeout(r, reduce ? 300 : 2300); }), // let the mark finish drawing
+            new Promise(function (r) { if (document.readyState === 'complete') r(); else addEventListener('load', r); })
+        ]).then(finish);
+    })();
+    </script>
+    <style>
+        #cj-loader { display: none; }
+        .js:not(.cj-seen) #cj-loader {
+            display: grid; place-items: center;
+            position: fixed; inset: 0; z-index: 100000;
+            background: #fbeedf;
+            transition: transform 1.05s cubic-bezier(.77, 0, .18, 1), visibility 0s 1.05s;
+        }
+        .js:not(.cj-seen):not(.cj-ready), .js:not(.cj-seen):not(.cj-ready) body { overflow: hidden; }
+        #cj-loader::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: #a89752; }
+        #cj-loader.is-done { transform: translateY(-100%); visibility: hidden; }
+        .cj-ld { display: flex; flex-direction: column; align-items: center; transition: opacity .45s ease, transform .6s cubic-bezier(.2, .7, .2, 1); }
+        .is-done .cj-ld { opacity: 0; transform: translateY(-28px) scale(.96); }
+        .cj-ld svg { width: min(260px, 66vw); height: auto; overflow: visible; }
+        .cj-ld path { fill: none; stroke: #a89752; stroke-width: 13; stroke-linecap: square; stroke-dasharray: 1; stroke-dashoffset: 1; animation: cjDraw .9s cubic-bezier(.45, 0, .2, 1) forwards; }
+        .cj-ld .cj-ld__base { stroke-width: 20; animation-delay: 0s; }
+        .cj-ld .cj-ld__wall { animation-delay: .2s; }
+        .cj-ld .cj-ld__bar { animation-delay: .45s; }
+        .cj-ld .cj-ld__roof { animation-delay: .6s; }
+        .cj-ld p {
+            margin: 26px -.35em 0 0; padding: 0;
+            font: 500 22px/1 "Cormorant Garamond", Georgia, serif; letter-spacing: .35em; text-transform: uppercase;
+            color: #a89752; opacity: 0; animation: cjFadeIn .9s ease 1.3s forwards;
+        }
+        @keyframes cjDraw { to { stroke-dashoffset: 0; } }
+        @keyframes cjFadeIn { to { opacity: 1; } }
+        @media (prefers-reduced-motion: reduce) {
+            .js:not(.cj-seen) #cj-loader { transition: opacity .3s, visibility 0s .3s; }
+            #cj-loader.is-done { transform: none; opacity: 0; }
+            .cj-ld path { animation: none; stroke-dashoffset: 0; }
+            .cj-ld p { animation: none; opacity: 1; }
+        }
+    </style>
+
     <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -97,6 +160,23 @@
 </head>
 
 <body class="page-contact page template-slider layout-full-width no-content-padding no-shadows header-transparent header-fw minimalist-header-no sticky-header ab-hide menu-link-color menuo-no-borders mobile-tb-hide mobile-side-slide mobile-mini-mr-ll tablet-sticky mobile-sticky tr-header tr-menu">
+    <!-- PRELOADER: the logo's house mark draws itself (base, walls, bars, roof), then the cover slides up -->
+    <div id="cj-loader" aria-hidden="true">
+        <div class="cj-ld">
+            <svg viewBox="600 690 736 262">
+                <path class="cj-ld__base" pathLength="1" d="M620 927H1315"/>
+                <path class="cj-ld__wall" pathLength="1" d="M788 917V778"/>
+                <path class="cj-ld__wall" pathLength="1" d="M895 917V724"/>
+                <path class="cj-ld__wall" pathLength="1" d="M1045 917V724"/>
+                <path class="cj-ld__wall" pathLength="1" d="M1150 917V778"/>
+                <path class="cj-ld__bar" pathLength="1" d="M788 832H1150"/>
+                <path class="cj-ld__bar" pathLength="1" d="M895 760H1045"/>
+                <path class="cj-ld__roof" pathLength="1" d="M750 790L922 715"/>
+                <path class="cj-ld__roof" pathLength="1" d="M1183 790L1012 715"/>
+            </svg>
+            <p>Casa Jenna</p>
+        </div>
+    </div>
     <div id="Wrapper">
         <div id="Header_wrapper">
             <header id="Header">
@@ -127,7 +207,8 @@
                         </div>
                     </div>
                 </div>
-                <section class="cj-hero cj-hero--short" style="background-image:url('images/casa-jenna/garden.jpg')">
+                <section class="cj-hero cj-hero--short">
+                    <div class="cj-hero__bg" style="background-image:url('images/casa-jenna/garden.jpg')"></div>
                     <div class="cj-hero__inner">
                         <div class="cj-hero__text">
                             <h1>Book <span class="cj-i">your</span> stay</h1>
