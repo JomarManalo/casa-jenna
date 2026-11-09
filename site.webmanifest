@@ -1,0 +1,11 @@
+{
+  "name": "Casa Jenna Private Resort",
+  "short_name": "Casa Jenna",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#3d402c",
+  "background_color": "#fbeedf",
+  "display": "browser"
+}

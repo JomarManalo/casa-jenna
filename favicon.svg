@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Casa Jenna favicon: the logo's house mark, simplified and thickened for small sizes -->
+  <rect width="32" height="32" rx="7" fill="#3d402c"/>
+  <g fill="none" stroke="#c4b06a" stroke-width="1.9" stroke-linecap="square">
+    <path d="M6.9 14.2L14.3 9.4M17.7 9.4L25.1 14.2"/>
+    <path d="M9.3 13V21.4M13.3 10.3V21.4M18.7 10.3V21.4M22.7 13V21.4"/>
+    <path d="M13.3 12.6H18.7M9.3 16.6H22.7"/>
+  </g>
+  <rect x="4" y="21.2" width="24" height="2.2" fill="#c4b06a"/>
+</svg>
