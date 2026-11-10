@@ -32,6 +32,52 @@
 		items.forEach(function (el) { el.classList.add('is-in'); });
 	}
 
+	// Parallax: banner photos move slower than the page (desktop, tablets and phones).
+	// Each photo layer is taller than its section (see css/custom.css) and the move is clamped to that extra room.
+	(function () {
+		var layers = Array.prototype.slice.call(document.querySelectorAll('.cj-hero__bg'));
+		if (!layers.length || !window.requestAnimationFrame) return;
+		if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		if (!('translate' in document.documentElement.style)) return; // very old browsers: still photos
+
+		var items = layers.map(function (el) {
+			var section = el.parentNode, isTop = !!section.closest('#Header');
+			return { el: el, section: section, isTop: isTop, speed: 0.2, onScreen: true }; // matches the extra room in custom.css
+		});
+
+		var queued = false;
+		function update() {
+			queued = false;
+			var vh = window.innerHeight;
+			items.forEach(function (it) {
+				if (!it.onScreen) return;
+				var r = it.section.getBoundingClientRect(), room = r.height * it.speed, y;
+				if (it.isTop) {
+					// starts still at the top of the page, drifts down as you scroll past
+					y = Math.min(Math.max(-r.top * it.speed, 0), room);
+				} else {
+					// centred: still when the section is in the middle of the screen
+					y = Math.max(-room, Math.min(room, -(r.top + r.height / 2 - vh / 2) * it.speed));
+				}
+				it.el.style.translate = '0 ' + y.toFixed(1) + 'px';
+			});
+		}
+		function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+
+		if ('IntersectionObserver' in window) {
+			var io = new IntersectionObserver(function (entries) {
+				entries.forEach(function (e) {
+					items.forEach(function (it) { if (it.section === e.target) it.onScreen = e.isIntersecting; });
+				});
+				queue();
+			}, { rootMargin: '100px 0px' });
+			items.forEach(function (it) { io.observe(it.section); });
+		}
+		window.addEventListener('scroll', queue, { passive: true });
+		window.addEventListener('resize', queue);
+		update();
+	})();
+
 	// Gallery lightbox
 	var gallery = document.querySelector('[data-cj-gallery]');
 	var box = document.querySelector('[data-cj-lightbox]');
