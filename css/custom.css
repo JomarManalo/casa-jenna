@@ -677,6 +677,8 @@ body #Top_bar .column.one .top_bar_left { width: auto !important; } /* beats the
 }
 .cj-btn:hover { background: var(--cj-accent-hover); }
 .cj-btn i { font-size: 16px; }
+/* inline line icon (Messenger) — the icon fonts don't include one */
+.cj-ico { width: 17px; height: 17px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round; stroke-linecap: round; }
 .cj-btn--ghost { background: transparent; color: var(--cj-olive) !important; box-shadow: inset 0 0 0 1px var(--cj-olive); }
 .cj-btn--ghost:hover { background: var(--cj-olive); color: var(--cj-cream) !important; }
 .cj-btns { display: flex; flex-wrap: wrap; gap: 14px; }
