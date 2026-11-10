@@ -19,6 +19,11 @@
 	--cj-script: "Mrs Saint Delafield", cursive;
 	--cj-logo-font: "Cormorant Garamond", Georgia, serif;
 	--cj-gold: #a89752; /* brand gold from logo.jpg */
+	/* lighter tints for use on the olive footer (the plain gold/orange are too dark on olive) */
+	--cj-olive-deep: #33361f;
+	--cj-gold-light: #c4b06a;
+	--cj-accent-light: #e3a24a;
+	--cj-cream-muted: #c9c3a6;
 }
 
 /* ---------- Base ---------- */
@@ -551,42 +556,95 @@ body #Top_bar .column.one .top_bar_left { width: auto !important; } /* beats the
 .cj-form button:hover { background: var(--cj-accent-hover) !important; }
 .cj-form__note { font-size: 14px; color: var(--cj-accent); }
 
-/* ---------- Footer ---------- */
+/* ---------- Footer (olive) ---------- */
 #Footer.cj-footer {
-	background: var(--cj-cream) !important;
-	color: var(--cj-olive);
-	padding: 110px 0 50px;
+	background: var(--cj-olive) !important;
+	color: var(--cj-cream);
+	padding: 0 0 34px;
 }
+#Footer.cj-footer p { margin: 0; }
+#Footer.cj-footer a { color: var(--cj-cream); transition: color .2s, background .2s; }
+#Footer.cj-footer a:hover { color: var(--cj-accent-light); }
+
+/* booking band */
+.cj-footer__cta { background: var(--cj-olive-deep); padding: 48px 0; }
+.cj-footer__cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 30px; flex-wrap: wrap; }
+#Footer.cj-footer .cj-footer__cta-title { font: italic 400 38px/1.15 var(--cj-serif); color: var(--cj-cream); }
+#Footer.cj-footer .cj-footer__cta-text { font-size: 15px; color: var(--cj-cream-muted); margin-top: 8px; }
+#Footer.cj-footer .cj-btn { color: #fff; }
+#Footer.cj-footer .cj-btn:hover { color: #fff; }
+/* !important to match the general .cj-btn--ghost rule, which forces olive text (invisible on olive) */
+#Footer.cj-footer .cj-btn--ghost { color: var(--cj-cream) !important; box-shadow: inset 0 0 0 1px var(--cj-cream); }
+#Footer.cj-footer .cj-btn--ghost:hover { background: var(--cj-cream); color: var(--cj-olive) !important; }
+.page-contact .cj-footer__cta { display: none; } /* contact page already has these buttons */
+
+/* columns */
+.cj-footer__main { padding-top: 90px; }
 .cj-footer__grid {
 	display: grid;
 	grid-template-columns: 1fr 1.4fr 1fr;
 	gap: 40px;
 	align-items: start;
 }
-#Footer.cj-footer h6 { font: 400 14px/1.4 var(--cj-sans); color: var(--cj-olive); margin-bottom: 26px; }
+#Footer.cj-footer .cj-footer__label {
+	font: 700 11px/1 var(--cj-sans);
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: var(--cj-gold-light);
+	margin-bottom: 18px;
+}
 .cj-footer__col--left { text-align: right; }
-#Footer.cj-footer .cj-footer__col p, #Footer.cj-footer .cj-footer__col a { font-size: 14px; color: var(--cj-olive); margin: 0; line-height: 1.75; }
-#Footer.cj-footer .cj-footer__col a:hover { color: var(--cj-accent); }
-.cj-footer__brand { text-align: center; border-bottom: 1px solid var(--cj-line); padding-bottom: 30px; }
-.cj-footer__brand .cj-logo { color: var(--cj-gold) !important; }
+#Footer.cj-footer .cj-footer__col { font-size: 14px; line-height: 1.75; color: var(--cj-cream); } /* inherited, so the label/muted rules win */
+#Footer.cj-footer .cj-footer__dir { color: var(--cj-accent-light); }
+#Footer.cj-footer .cj-footer__dir:hover { color: var(--cj-cream); }
+#Footer.cj-footer .cj-footer__gap { margin-top: 12px; }
+#Footer.cj-footer .cj-footer__muted { color: var(--cj-cream-muted); }
+
+/* logo, social icons, handle */
+.cj-footer__brand { text-align: center; }
+#Footer.cj-footer .cj-footer__brand .cj-logo { color: var(--cj-gold-light) !important; }
 .cj-footer__brand .cj-logo .cj-mark { width: 120px; margin-bottom: 10px; }
 .cj-footer__brand .cj-logo__name { font-size: 30px; }
-.cj-footer__social { display: flex; justify-content: center; gap: 26px; margin-top: 24px; }
-#Footer.cj-footer .cj-footer__social a { color: var(--cj-olive); font-size: 15px; }
-#Footer.cj-footer .cj-footer__social a:hover { color: var(--cj-accent); }
-#Footer.cj-footer .cj-footer__copy { text-align: center; font-size: 13px; margin-top: 50px; color: var(--cj-olive); }
-.cj-to-top {
-	display: flex;
-	margin: 36px auto 0;
-	width: 52px;
-	height: 52px;
+.cj-footer__social { display: flex; justify-content: center; gap: 12px; margin-top: 24px; }
+#Footer.cj-footer .cj-footer__social a {
+	width: 42px;
+	height: 42px;
 	border-radius: 50%;
-	background: var(--cj-accent);
-	color: #fff !important;
+	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	font-size: 15px;
+	color: var(--cj-cream);
+	box-shadow: inset 0 0 0 1px rgba(251, 238, 223, .55);
 }
-.cj-to-top:hover { background: var(--cj-accent-hover); }
+#Footer.cj-footer .cj-footer__social a:hover { background: var(--cj-cream); color: var(--cj-olive); }
+#Footer.cj-footer .cj-footer__handle { margin-top: 14px; font-size: 13px; }
+#Footer.cj-footer .cj-footer__handle a { color: var(--cj-cream-muted); }
+#Footer.cj-footer .cj-footer__handle a:hover { color: var(--cj-accent-light); }
+
+/* bottom bar */
+.cj-footer__bar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	margin-top: 64px;
+	padding-top: 24px;
+	border-top: 1px solid rgba(251, 238, 223, .2);
+}
+#Footer.cj-footer .cj-footer__copy { font-size: 13px; color: var(--cj-cream-muted); }
+#Footer.cj-footer .cj-to-top {
+	display: inline-flex;
+	flex-shrink: 0;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	align-items: center;
+	justify-content: center;
+	color: var(--cj-accent-light);
+	box-shadow: inset 0 0 0 1px var(--cj-accent-light);
+}
+#Footer.cj-footer .cj-to-top:hover { background: var(--cj-accent-light); color: var(--cj-olive); }
 .cj-to-top svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
 #back_to_top { display: none !important; } /* replaced by .cj-to-top */
 
@@ -755,9 +813,16 @@ a.cj-contact__value:hover { color: var(--cj-accent); }
 	.cj-person img { max-width: 260px; }
 	.cj-detail__images img:last-child { margin-top: 40px; }
 	.cj-form { grid-template-columns: 1fr; }
-	.cj-footer__grid { grid-template-columns: 1fr; text-align: center; }
+	.cj-footer__grid { grid-template-columns: 1fr; text-align: center; gap: 44px; }
 	.cj-footer__col--left { text-align: center; }
 	.cj-footer__brand { order: -1; }
+	.cj-footer__cta { padding: 40px 0; }
+	.cj-footer__cta-inner { flex-direction: column; text-align: center; gap: 22px; }
+	#Footer.cj-footer .cj-footer__cta-title { font-size: 30px; }
+	.cj-footer__cta .cj-btns { flex-direction: column; width: 100%; }
+	.cj-footer__cta .cj-btn { justify-content: center; }
+	.cj-footer__main { padding-top: 60px; }
+	.cj-footer__bar { flex-direction: column-reverse; text-align: center; margin-top: 50px; gap: 16px; }
 	.cj-menu-item { gap: 16px; }
 	.cj-taste { padding-bottom: 60px; }
 	.cj-amenities { grid-template-columns: repeat(2, 1fr); }
