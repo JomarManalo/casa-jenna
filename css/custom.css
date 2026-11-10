@@ -34,24 +34,28 @@ body, .column_attr p { color: var(--cj-text); }
 p { margin-bottom: 18px; }
 img { max-width: 100%; height: auto; }
 
-h1, h2, h3, h4 {
+/* Heading rules are written as "html body hN" (not plain "hN") on purpose: browser extensions sometimes inject
+   CSS resets such as normalize.css ("h1 { font-size: 2em }") into every website. A plain "h1" rule ties with
+   theirs and the injected one wins, shrinking the banner headings; the extra "html body" always outranks it.
+   Section rules with a class (e.g. ".cj-features h3") still override these as before. */
+html body h1, html body h2, html body h3, html body h4 {
 	font-family: var(--cj-display);
 	font-weight: 400;
 	color: var(--cj-olive);
 	letter-spacing: -2px;
 }
-h1 { font-size: 90px; line-height: 100px; }
-h2 { font-size: 72px; line-height: 80px; }
-h3 { font-size: 60px; line-height: 60px; }
-h4 { font-size: 48px; line-height: 53px; letter-spacing: -1px; }
-h5, h6 {
+html body h1 { font-size: 90px; line-height: 100px; }
+html body h2 { font-size: 72px; line-height: 80px; }
+html body h3 { font-size: 60px; line-height: 60px; }
+html body h4 { font-size: 48px; line-height: 53px; letter-spacing: -1px; }
+html body h5, html body h6 {
 	font-family: var(--cj-serif);
 	font-weight: 400;
 	color: var(--cj-olive);
 	letter-spacing: 0;
 }
-h5 { font-size: 32px; line-height: 41px; }
-h6 { font-size: 20px; line-height: 26px; font-weight: 600; }
+html body h5 { font-size: 32px; line-height: 41px; }
+html body h6 { font-size: 20px; line-height: 26px; font-weight: 600; }
 
 /* the italic serif word inside display headings: "own <em>personal</em> sanctuary" */
 .cj-i {
@@ -314,6 +318,7 @@ body #Top_bar .column.one .top_bar_left { width: auto !important; } /* beats the
 }
 .cj-hero__text { max-width: 620px; }
 .cj-hero h1, .cj-hero h2 { color: var(--cj-cream); margin-bottom: 26px; }
+.cj-hero h1 { margin-top: 0; } /* same as before; also beats injected resets' "h1 { margin: .67em 0 }" */
 .cj-hero h6 { color: var(--cj-cream); font-weight: 400; max-width: 480px; margin: 0; }
 
 /* ---------- Generic section spacing ---------- */
@@ -686,8 +691,8 @@ a.cj-contact__value:hover { color: var(--cj-accent); }
    Responsive
    ========================================================================== */
 @media only screen and (max-width: 1239px) {
-	h1 { font-size: 72px; line-height: 80px; }
-	h2 { font-size: 58px; line-height: 64px; }
+	html body h1 { font-size: 72px; line-height: 80px; }
+	html body h2 { font-size: 58px; line-height: 64px; }
 	#Top_bar .column.one { padding: 0 24px; }
 	#Top_bar .menu > li > a span:not(.description) { padding: 0 14px; }
 	.cj-intro { gap: 70px; }
@@ -697,11 +702,11 @@ a.cj-contact__value:hover { color: var(--cj-accent); }
 }
 
 @media only screen and (max-width: 959px) {
-	h1 { font-size: 58px; line-height: 64px; letter-spacing: -1px; }
-	h2 { font-size: 46px; line-height: 52px; letter-spacing: -1px; }
-	h3 { font-size: 42px; line-height: 46px; }
-	h4 { font-size: 36px; line-height: 42px; }
-	h5 { font-size: 26px; line-height: 34px; }
+	html body h1 { font-size: 58px; line-height: 64px; letter-spacing: -1px; }
+	html body h2 { font-size: 46px; line-height: 52px; letter-spacing: -1px; }
+	html body h3 { font-size: 42px; line-height: 46px; }
+	html body h4 { font-size: 36px; line-height: 42px; }
+	html body h5 { font-size: 26px; line-height: 34px; }
 	.cj-section { padding: 90px 0; }
 	.cj-intro, .cj-detail, .cj-menu-split { grid-template-columns: 1fr; gap: 60px; }
 	.cj-intro__badge { right: 24px; top: auto; bottom: -56px; transform: none; }
@@ -713,11 +718,11 @@ a.cj-contact__value:hover { color: var(--cj-accent); }
 
 /* BeTheme switches to the mobile header below 768px */
 @media only screen and (max-width: 767px) {
-	h1 { font-size: 44px; line-height: 50px; }
-	h2 { font-size: 36px; line-height: 42px; }
-	h3 { font-size: 34px; line-height: 38px; }
-	h5 { font-size: 22px; line-height: 30px; }
-	h6 { font-size: 17px; line-height: 24px; }
+	html body h1 { font-size: 44px; line-height: 50px; }
+	html body h2 { font-size: 36px; line-height: 42px; }
+	html body h3 { font-size: 34px; line-height: 38px; }
+	html body h5 { font-size: 22px; line-height: 30px; }
+	html body h6 { font-size: 17px; line-height: 24px; }
 	#Top_bar .column.one { padding: 0 16px; }
 	#Top_bar:not(.is-sticky) {
 		position: absolute !important;
