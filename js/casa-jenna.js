@@ -111,13 +111,98 @@
 		});
 	}
 
-	// Contact form: front-end only until a backend/form service is connected
-	var form = document.querySelector('[data-cj-form]');
-	if (form) {
-		form.addEventListener('submit', function (e) {
-			e.preventDefault();
-			var note = form.querySelector('.cj-form__note');
-			if (note) note.textContent = 'Thank you! This form is not connected yet — please call or email us for now.';
+	// Quick inquiry (contact page): builds a booking message from the form and sends it by text (sms: link
+	// with the message pre-filled) or Messenger (copies the message, then opens the chat). No server needed.
+	// Same check-in and check-out date = day use.
+	var inq = document.querySelector('[data-cj-inquiry]');
+	if (inq) {
+		var PHONE = '+639175426468';
+		var q = function (s) { return inq.querySelector(s); };
+		var fName = q('#inq-name'), fGuests = q('#inq-guests'), fIn = q('#inq-in'), fOut = q('#inq-out'),
+			fHall = q('#inq-hall'), fFlex = q('#inq-flex'), preview = q('[data-cj-preview]'),
+			nightsEl = q('[data-cj-nights]'), errEl = q('[data-cj-error]'), noteEl = q('[data-cj-note]'),
+			smsBtn = q('[data-cj-send="sms"]'), msgBtn = q('[data-cj-send="messenger"]');
+
+		var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+		var toIso = function (d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+		var parse = function (s) { if (!s) return null; var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); };
+		var fmt = function (d, withYear) {
+			var o = { weekday: 'short', month: 'short', day: 'numeric' }; if (withYear) o.year = 'numeric';
+			return d.toLocaleDateString('en-US', o);
+		};
+		var today = toIso(new Date());
+		fIn.min = today; fOut.min = today; // no past dates
+
+		function state() {
+			var ci = parse(fIn.value), co = parse(fOut.value), s = { dates: 'Dates to follow', hint: '', problem: '' };
+			if (ci && co) {
+				var n = Math.round((co - ci) / 864e5);
+				if (n < 0) { s.problem = 'Check-out can’t be before check-in.'; s.dates = fmt(ci, true) + ' (check-out to confirm)'; }
+				else if (n === 0) { s.hint = 'Day use'; s.dates = 'Day use on ' + fmt(ci, true); }
+				else { s.hint = n + ' night' + (n > 1 ? 's' : ''); s.dates = fmt(ci, false) + ' – ' + fmt(co, true) + ' (' + s.hint + ')'; }
+			} else if (ci) { s.dates = fmt(ci, true) + ' (check-out to confirm)'; }
+			if (fFlex.checked) s.dates += ' — flexible on dates';
+			s.text = 'Hi Casa Jenna! I’d like to inquire about booking.\n' +
+				'Name: ' + (fName.value.trim() || '—') + '\n' +
+				'Dates: ' + s.dates + '\n' +
+				'Guests: ' + (fGuests.value || '—') + '\n' +
+				'Function hall: ' + (fHall.value || 'Not sure yet');
+			return s;
+		}
+		function missing() {
+			if (!fName.value.trim()) return [fName, 'Enter your name.'];
+			if (!fIn.value) return [fIn, 'Choose your check-in date.'];
+			if (!fOut.value) return [fOut, 'Choose your check-out date (the same day for day use).'];
+			if (parse(fOut.value) < parse(fIn.value)) return [fOut, 'Check-out can’t be before check-in.'];
+			if (!fGuests.value) return [fGuests, 'Choose the number of guests.'];
+			return null;
+		}
+		function render() {
+			var s = state();
+			preview.textContent = s.text;
+			nightsEl.textContent = s.hint;
+			errEl.textContent = s.problem;
+			// iPhones use "&body=", other phones "?body="
+			smsBtn.href = 'sms:' + PHONE + (/iPhone|iPad|iPod/i.test(navigator.userAgent) ? '&' : '?') + 'body=' + encodeURIComponent(s.text);
+		}
+		function copy(text) { // synchronous copy (works inside the click, before Messenger opens)
+			var ok = false, ta = document.createElement('textarea');
+			ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+			document.body.appendChild(ta); ta.select();
+			try { ok = document.execCommand('copy'); } catch (e) {}
+			document.body.removeChild(ta);
+			if (!ok && navigator.clipboard) { navigator.clipboard.writeText(text).catch(function () {}); ok = true; }
+			return ok;
+		}
+		function guard(e) {
+			var m = missing();
+			if (m) { e.preventDefault(); errEl.textContent = m[1]; noteEl.textContent = ''; m[0].focus(); return false; }
+			errEl.textContent = ''; return true;
+		}
+
+		inq.addEventListener('input', render);
+		inq.addEventListener('change', function (e) {
+			if (e.target === fIn && fIn.value) { // check-out can't be earlier (its calendar also opens on that month)
+				fOut.min = fIn.value;
+				if (fOut.value && fOut.value < fIn.value) fOut.value = ''; // clear rather than guess day use
+			}
+			render();
 		});
+		inq.addEventListener('submit', function (e) { e.preventDefault(); });
+		smsBtn.addEventListener('click', function (e) {
+			render();
+			if (!guard(e)) return;
+			noteEl.textContent = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+				? 'Opening your messages app…'
+				: 'Texting works from a phone. On a computer, use Messenger or call 0917 542 6468.';
+		});
+		msgBtn.addEventListener('click', function (e) {
+			render();
+			if (!guard(e)) return;
+			noteEl.textContent = copy(state().text)
+				? 'Your message is copied — paste it into the Messenger chat and send.'
+				: 'Messenger is opening — copy the message above and paste it into the chat.';
+		});
+		render();
 	}
 })();

@@ -10,6 +10,7 @@ TODAY="$(date +%F)"
 export EMBLEM='<svg class="cj-mark" viewBox="612 700 712 245" fill="none" stroke="currentColor" stroke-width="13" aria-hidden="true"><path d="M750 790L922 715M1012 715L1183 790M788 778V917M895 724V917M1045 724V917M1150 778V917M895 760H1045M788 832H1150"/><rect x="620" y="917" width="695" height="20" fill="currentColor" stroke="none"/></svg>'
 export ARROW='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 export ARROW_L='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>'
+export MSGR='<svg class="cj-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8c-5.1 0-9.2 3.8-9.2 8.6 0 2.7 1.3 5.1 3.4 6.7v3.4l3.1-1.7c.9.2 1.8.4 2.7.4 5.1 0 9.2-3.8 9.2-8.6S17.1 2.8 12 2.8z"/><path d="M7.2 13.6l3.1-3.3 2.2 2.2 4.3-2.6-3.1 3.3-2.2-2.2z"/></svg>'
 
 # page | title | description | body class | active key | share image (images/og/) | share image alt | breadcrumb name
 pages=(
@@ -97,7 +98,7 @@ $graph
     s/\{\{TITLE\}\}/$ENV{TITLE}/g; s/\{\{DESC\}\}/$ENV{DESC}/g; s/\{\{BODYCLASS\}\}/$ENV{BODYCLASS}/g;
     s/\{\{URL\}\}/$ENV{URL}/g; s/\{\{IMAGE\}\}/$ENV{IMAGE}/g; s/\{\{IMAGE_ALT\}\}/$ENV{IMAGE_ALT}/g;
     s/\{\{JSONLD\}\}/$ENV{JSONLD}/g;
-    s/\{\{EMBLEM\}\}/$ENV{EMBLEM}/g; s/\{\{ARROW_L\}\}/$ENV{ARROW_L}/g; s/\{\{ARROW\}\}/$ENV{ARROW}/g;
+    s/\{\{EMBLEM\}\}/$ENV{EMBLEM}/g; s/\{\{ARROW_L\}\}/$ENV{ARROW_L}/g; s/\{\{MSGR\}\}/$ENV{MSGR}/g; s/\{\{ARROW\}\}/$ENV{ARROW}/g;
     s/\{\{A_$ENV{ACTIVE}\}\}/current-menu-item page_item current_page_item/g; s/\{\{A_[A-Z]+\}\}//g;
   ' > "$OUT/$name.html"
   echo "built $name.html"
